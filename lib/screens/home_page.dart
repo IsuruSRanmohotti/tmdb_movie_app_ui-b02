@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tmdb_movie_app_ui/models/movie_model.dart';
 import 'package:tmdb_movie_app_ui/screens/movie_view.dart';
+import 'package:tmdb_movie_app_ui/screens/search_result.dart';
 import 'package:tmdb_movie_app_ui/services/api_services.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ApiServices service = ApiServices();
+  TextEditingController queryController = TextEditingController();
   List<MovieModel>? movies = [];
   @override
   Widget build(BuildContext context) {
@@ -51,22 +53,33 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                   color: Colors.grey.shade800,
                   borderRadius: BorderRadius.circular(50)),
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                       child: TextField(
+                    controller: queryController,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Search",
                         hintStyle: TextStyle(color: Colors.grey)),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )),
                   Padding(
-                    padding: EdgeInsets.only(right: 12),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.white,
+                    padding: const EdgeInsets.only(right: 12),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchResult(query: queryController.text),
+                            ));
+                      },
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
                     ),
                   )
                 ],
